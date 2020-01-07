@@ -62,10 +62,6 @@ class App
 
             $this->load->config('Config');
 
-            $this->registerPostTypes();
-            $this->addHooks();
-            $this->loadShortcodes();
-
             if (is_admin()) {
                 // Backend Controller
                 $this->load->registerMaintenance();
@@ -81,6 +77,10 @@ class App
                     $this->FrontendController->init();
                 }
             }
+
+            $this->registerPostTypes();
+            $this->addHooks();
+            $this->loadShortcodes();
         } catch (AppException $exception) {
             $this->exception = $exception;
 
@@ -187,7 +187,7 @@ class App
                     $controllerName = $action['callback']['controller'];
 
                     if (!isset($this->$controllerName)) {
-                        $this->load->controller($action['callback']['controller']);
+                        $this->load->controller($controllerName);
                     }
 
                     $callback = [
