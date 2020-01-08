@@ -48,5 +48,8 @@ Yes, it is compatible with WooCommerce 100%.
 = 0.0.1 =
 * Initial plugin
 
+= 0.0.2 =
+* Added Leverage browser caching for static files
+
 == Upgrade Notice ==
 ....

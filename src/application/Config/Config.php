@@ -23,6 +23,8 @@ class Config
 {
     public $version = '0.0.1';
 
+    public $textDomain = 'essential-performance';
+
     public $actions = [];
 
     public $filters = [];
@@ -54,6 +56,23 @@ class Config
             'priority' => 100,
         ];
 
+
+        // Backend actions
+        $this->actions[] = [
+            'name'     => 'admin_init',
+            'callback' => [
+                'controller' => 'BackendController',
+                'action'     => 'initCallback'
+            ]
+        ];
+
+        $this->actions[] = [
+            'name'     => 'admin_menu',
+            'callback' => [
+                'controller' => 'BackendController',
+                'action'     => 'settingsMenuCallback'
+            ]
+        ];
     }
 
 }
