@@ -40,9 +40,6 @@ class BackendController extends Controller implements InitInterface
     public function initCallback()
     {
         $this->registerSettings();
-
-        // Set class property
-        $this->options = get_option('essential_settings');
     }
 
     /**
@@ -68,7 +65,6 @@ class BackendController extends Controller implements InitInterface
      */
     public function settingsPageCallback()
     {
-        var_dump($this->options);
         echo $this->load->view('Backend/settings_page', []);
     }
 
@@ -85,9 +81,17 @@ class BackendController extends Controller implements InitInterface
 
         add_settings_section(
             $this->Config->textDomain . '_setting_section',
-            __('Leverage Browser Caching for Images, CSS and JS', $this->Config->textDomain),
+            __('General Settings', $this->Config->textDomain),
             [$this, 'sectionInfoCallback'],
             'essential_settings'
+        );
+
+        add_settings_field(
+            'essential_settings_lazy_load',
+            __('Lazy Load', $this->Config->textDomain),
+            [$this, 'lazyLoadCallback'],
+            'essential_settings',
+            $this->Config->textDomain . '_setting_section'
         );
 
         add_settings_field(
@@ -104,8 +108,19 @@ class BackendController extends Controller implements InitInterface
      */
     public function sectionInfoCallback()
     {
-        _e('To leverage your browser\'s caching generally means that you can specify how long web browsers should keep images, CSS and JS stored locally. ' .
-            'That way the user\'s browser will download less data while navigating through your pages, which will improve the loading speed of your website.', $this->Config->textDomain);
+        _e('Turn features On or Off', $this->Config->textDomain);
+    }
+
+    /**
+     * Print the Field html
+     */
+    public function lazyLoadCallback()
+    {
+        $checked = $this->Config->options['lazy_load'] ? 'checked' : '';
+        echo '<label><input id="essential_settings_lazy_load" name="essential_settings[lazy_load]" type="checkbox" value="1" ' . $checked . ' />' . __('Use Lazy Load', $this->Config->textDomain) . '</label>';
+        echo '<p class="description">';
+        _e('Lazy Load images when they enter the browsers viewport', $this->Config->textDomain);
+        echo '</p>';
     }
 
     /**
@@ -113,8 +128,12 @@ class BackendController extends Controller implements InitInterface
      */
     public function leverageBrowserCachingCallback()
     {
-        $checked = $this->options['browser_caching'] ? 'checked' : '';
-        echo '<input id="essential_settings_browser_caching" name="essential_settings[browser_caching]" type="checkbox" value="1" ' . $checked . ' />';
+        $checked = $this->Config->options['browser_caching'] ? 'checked' : '';
+        echo '<label><input id="essential_settings_browser_caching" name="essential_settings[browser_caching]" type="checkbox" value="1" ' . $checked . ' />' . __('Add caching for Images, CSS and JS', $this->Config->textDomain) . '</label>';
+        echo '<p class="description">';
+        _e('To leverage your browser\'s caching generally means that you can specify how long web browsers should keep images, CSS and JS stored locally.<br>' .
+            'That way the user\'s browser will download less data while navigating through your pages, which will improve the loading speed of your website.', $this->Config->textDomain);
+        echo '</p>';
     }
 
     /**
@@ -128,21 +147,27 @@ class BackendController extends Controller implements InitInterface
     {
         $inputSanitized = [];
 
-        $this->load->model('Apache');
+        $this->load->model('ApacheModel');
         $this->ApacheModel->read();
 
         if (isset($input['browser_caching'])) {
             $inputSanitized['browser_caching'] = 1;
 
-            if (($this->options['browser_caching'] === 0) && $this->Apache->addRule('EssentialPerformanceExpires', $this->Apache->getExpires())) {
-                $this->Apache->write();
+            if (($this->Config->options['browser_caching'] === 0) && $this->ApacheModel->addRule('EssentialPerformanceExpires', $this->ApacheModel->getExpires())) {
+                $this->ApacheModel->write();
             }
         } else {
             $inputSanitized['browser_caching'] = 0;
 
-            if (($this->options['browser_caching'] === 1) && $this->ApacheModel->deleteRule('EssentialPerformanceExpires')) {
+            if (($this->Config->options['browser_caching'] === 1) && $this->ApacheModel->deleteRule('EssentialPerformanceExpires')) {
                 $this->ApacheModel->write();
             }
+        }
+
+        if (isset($input['lazy_load'])) {
+            $inputSanitized['lazy_load'] = 1;
+        } else {
+            $inputSanitized['lazy_load'] = 0;
         }
 
         return $inputSanitized;

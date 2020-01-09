@@ -90,45 +90,45 @@ class ApacheModel extends Model
 
     public function getExpires()
     {
-        return '# BEGIN EssentialPerformanceExpires' . PHP_EOL .
-            '<FilesMatch "\.(jpg|jpeg|png|gif|webp|svg|js|css|webm|mp4|ogg|ico|pdf|woff|woff2|otf|ttf|eot|x-html|xml|flv|swf)(\.gz)?$">' . PHP_EOL .
-            '<IfModule mod_headers.c>' . PHP_EOL .
-            'Header set Expires "max-age=A31536000, public"' . PHP_EOL .
-            'Header set Connection keep-alive' . PHP_EOL .
-            'Header unset ETag' . PHP_EOL .
-            'FileETag None' . PHP_EOL .
-            '</IfModule>' . PHP_EOL .
-            '<IfModule mod_expires.c>' . PHP_EOL .
-            'ExpiresActive On' . PHP_EOL .
-            'ExpiresDefault A0' . PHP_EOL .
+        return '# BEGIN EssentialPerformanceExpires\n' . "\n" .
+            '<FilesMatch "\.(jpg|jpeg|png|gif|webp|svg|js|css|webm|mp4|ogg|ico|pdf|woff|woff2|otf|ttf|eot|x-html|xml|flv|swf)(\.gz)?$">' . "\n" .
+            '<IfModule mod_headers.c>' . "\n" .
+            'Header set Expires "max-age=A31536000, public"' . "\n" .
+            'Header set Connection keep-alive' . "\n" .
+            'Header unset ETag' . "\n" .
+            'FileETag None' . "\n" .
+            '</IfModule>' . "\n" .
+            '<IfModule mod_expires.c>' . "\n" .
+            'ExpiresActive On' . "\n" .
+            'ExpiresDefault A0' . "\n" .
 
-            'AddType application/font-woff2 .woff2' . PHP_EOL .
-            'AddType application/x-font-opentype .otf' . PHP_EOL .
+            'AddType application/font-woff2 .woff2' . "\n" .
+            'AddType application/x-font-opentype .otf' . "\n" .
 
-            'ExpiresByType application/javascript A31536000' . PHP_EOL .
-            'ExpiresByType application/x-javascript A31536000' . PHP_EOL .
+            'ExpiresByType application/javascript A31536000' . "\n" .
+            'ExpiresByType application/x-javascript A31536000' . "\n" .
 
-            'ExpiresByType application/font-woff2 A31536000' . PHP_EOL .
-            'ExpiresByType application/x-font-opentype A31536000' . PHP_EOL .
-            'ExpiresByType application/x-font-truetype A31536000' . PHP_EOL .
+            'ExpiresByType application/font-woff2 A31536000' . "\n" .
+            'ExpiresByType application/x-font-opentype A31536000' . "\n" .
+            'ExpiresByType application/x-font-truetype A31536000' . "\n" .
 
-            'ExpiresByType image/png A31536000' . PHP_EOL .
-            'ExpiresByType image/jpg A31536000' . PHP_EOL .
-            'ExpiresByType image/jpeg A31536000' . PHP_EOL .
-            'ExpiresByType image/gif A31536000' . PHP_EOL .
-            'ExpiresByType image/webp A31536000' . PHP_EOL .
-            'ExpiresByType image/ico A31536000' . PHP_EOL .
-            'ExpiresByType image/svg+xml A31536000' . PHP_EOL .
+            'ExpiresByType image/png A31536000' . "\n" .
+            'ExpiresByType image/jpg A31536000' . "\n" .
+            'ExpiresByType image/jpeg A31536000' . "\n" .
+            'ExpiresByType image/gif A31536000' . "\n" .
+            'ExpiresByType image/webp A31536000' . "\n" .
+            'ExpiresByType image/ico A31536000' . "\n" .
+            'ExpiresByType image/svg+xml A31536000' . "\n" .
 
-            'ExpiresByType text/css A31536000' . PHP_EOL .
-            'ExpiresByType text/javascript A31536000' . PHP_EOL .
+            'ExpiresByType text/css A31536000' . "\n" .
+            'ExpiresByType text/javascript A31536000' . "\n" .
 
-            'ExpiresByType video/ogg A31536000' . PHP_EOL .
-            'ExpiresByType video/mp4 A31536000' . PHP_EOL .
-            'ExpiresByType video/webm A31536000' . PHP_EOL .
-            '</IfModule>' . PHP_EOL .
-            '</FilesMatch>' . PHP_EOL .
-            '# END EssentialPerformanceExpires' . PHP_EOL;
+            'ExpiresByType video/ogg A31536000' . "\n" .
+            'ExpiresByType video/mp4 A31536000' . "\n" .
+            'ExpiresByType video/webm A31536000' . "\n" .
+            '</IfModule>' . "\n" .
+            '</FilesMatch>' . "\n" .
+            '# END EssentialPerformanceExpires' . "\n";
     }
 
     /**
@@ -162,7 +162,7 @@ class ApacheModel extends Model
     public function deleteRule($marker)
     {
         $count = 0;
-        $pattern = '/#\s?BEGIN\s?' . $marker . '.*?#\s?END\s?' . $marker . '/s';
+        $pattern = '/#\s?BEGIN\s?' . $marker . '.*?#\s?END\s?' . $marker . '\n/s';
         $this->content = preg_replace($pattern, '', $this->content, -1, $count);
 
         return $count > 0;

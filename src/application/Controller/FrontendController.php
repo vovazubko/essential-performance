@@ -19,9 +19,15 @@ declare(strict_types=1);
 namespace EssentialPerformance\Controller;
 
 
+use EssentialPerformance\Config\Config;
 use EssentialPerformanceFramework\Core\Controller;
 use EssentialPerformanceFramework\Core\InitInterface;
 
+/**
+ * Class FrontendController
+ * @package EssentialPerformance\Controller
+ * @property Config $Config
+ */
 class FrontendController extends Controller implements InitInterface
 {
     public function init()
@@ -30,8 +36,10 @@ class FrontendController extends Controller implements InitInterface
 
     public function addEnqueueScripts()
     {
-        wp_enqueue_script('essential-lazy-load', $this->appURL . 'assets/js/lazyload/lazyload.min.js', [], '2.0.0-rc.2', true);
-        wp_enqueue_script('essential-main', $this->appURL . 'assets/js/main.js', ['jquery', 'essential-lazy-load'], $this->Config->version, true);
+        if ($this->Config->options['lazy_load'] === 1) {
+            wp_enqueue_script('essential-lazy-load', $this->appURL . 'assets/js/lazyload/lazyload.min.js', [], '2.0.0-rc.2', true);
+            wp_enqueue_script('essential-main', $this->appURL . 'assets/js/main.js', ['jquery', 'essential-lazy-load'], $this->Config->version, true);
+        }
     }
 
     public function addFooter()

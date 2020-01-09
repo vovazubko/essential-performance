@@ -21,9 +21,14 @@ namespace EssentialPerformance\Config;
 
 class Config
 {
-    public $version = '0.0.1';
+    public $version = '0.0.3';
 
     public $textDomain = 'essential-performance';
+
+    public $options = [
+        'lazy_load'       => 0,
+        'browser_caching' => 0,
+    ];
 
     public $actions = [];
 
@@ -31,6 +36,16 @@ class Config
 
     public function __construct()
     {
+        // Load options
+        $options = get_option('essential_settings');
+
+        if (is_array($options)) {
+            foreach ($options as $key => $value) {
+                $this->options[$key] = $value;
+            }
+        }
+
+
         $this->actions[] = [
             'name'     => 'wp_enqueue_scripts',
             'callback' => [
@@ -47,14 +62,17 @@ class Config
             ]
         ];
 
-        $this->filters[] = [
-            'name'     => 'the_content',
-            'callback' => [
-                'controller' => 'LazyLoadController',
-                'action'     => 'updateContentImages'
-            ],
-            'priority' => 100,
-        ];
+
+        if ($this->options['lazy_load'] === 1) {
+            $this->filters[] = [
+                'name'     => 'the_content',
+                'callback' => [
+                    'controller' => 'LazyLoadController',
+                    'action'     => 'updateContentImages'
+                ],
+                'priority' => 100,
+            ];
+        }
 
 
         // Backend actions

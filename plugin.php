@@ -13,7 +13,7 @@
  * @wordpress-plugin
  * Plugin Name:       Essential Performance
  * Description:       Essential Performance plugin for Wordpress.
- * Version:           0.0.2
+ * Version:           0.0.3
  * Requires at least: 5.2
  * Requires PHP:      7.0
  * Author:            Vova Zubko <vozubko@gmail.com>
