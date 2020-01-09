@@ -23,6 +23,7 @@ engines and as a result even more visitors.
 <h4>Features</h4>
 
 *   Lazy Load - is a smart technique which reduces the page load time.
+*   Leverage Browser Caching - To leverage your browser's caching generally means that you can specify how long web browsers should keep images, CSS and JS stored locally.
 
 
 == Installation ==
@@ -45,11 +46,15 @@ Yes, it is compatible with WooCommerce 100%.
 
 == Changelog ==
 
-= 0.0.1 =
-* Initial plugin
+= 0.0.3 =
+Added switch for Lazy Load.
+Minor fixes.
 
 = 0.0.2 =
 * Added Leverage browser caching for static files
+
+= 0.0.1 =
+* Initial plugin
 
 == Upgrade Notice ==
 ....
